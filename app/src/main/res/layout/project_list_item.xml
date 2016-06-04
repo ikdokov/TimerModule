@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="project"
+            type="businesslogic.Project"/>
+        <variable
+            name="handler"
+            type="com.example.ivan.ui.ProjectsListRecyclerViewAdapter" />
+        <variable
+            name="position"
+            type="java.lang.Integer"/>
+    </data>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@{project.title}"
+        android:id="@+id/projectTitle" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@{project.description}"
+        android:id="@+id/projectDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@{String.valueOf(project.totalTime)}"
+        android:id="@+id/projectTime" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{project.isRunning ? @string/stop : @string/start}"
+        android:id="@+id/startButton"
+        android:tag="@{position}"
+        android:onClick="@{handler.onStartButtonClick}" />
+</LinearLayout>
+
+</layout>
