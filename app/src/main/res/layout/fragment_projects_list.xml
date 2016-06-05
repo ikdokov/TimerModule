@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ProjectsListFragment"
-    tools:listitem="@layout/fragment_projectlist" />
+    tools:listitem="@layout/project_list_item" />

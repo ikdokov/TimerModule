@@ -23,7 +23,7 @@ public class CurrentProjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_project, container, false);
+        return inflater.inflate(R.layout.fragment_current_project, container, false);
     }
 
     public void onButtonPressed(Uri uri) {

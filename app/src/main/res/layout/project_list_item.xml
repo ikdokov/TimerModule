@@ -38,13 +38,6 @@
         android:text="@{String.valueOf(project.totalTime)}"
         android:id="@+id/projectTime" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{project.isRunning ? @string/stop : @string/start}"
-        android:id="@+id/startButton"
-        android:tag="@{position}"
-        android:onClick="@{handler.onStartButtonClick}" />
 </LinearLayout>
 
 </layout>

@@ -1,78 +1,172 @@
 package com.example.ivan.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import businesslogic.Project;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, CreateProjectFragment.OnNewProjectFragmentInteractionListener, CurrentProjectFragment.OnFragmentInteractionListener {
 
-    private Timer currentTimer = new Timer();
-    private int timeCounter = 0;
-
-    boolean isRunning = false;
-
-    private TextView timerTextView;
+    private static final String PROJECTS_FRAGMENT_TAG = "PROJECTS_FRAGMENT_TAG";
+    private static final String DIALOG_FRAGMENT_TAG = "DIALOG_FRAGMENT";
+    private static final String CURRENT_FRAGMENT_TAG = "CURRENT_FRAGMENT_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        timerTextView = (TextView) findViewById(R.id.timerTextView);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        final Button startButton = (Button) findViewById(R.id.startButton);
-        if (startButton != null) {
-            startButton.setOnClickListener(new View.OnClickListener() {
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if (isRunning) {
-                        startButton.setText(R.string.start);
-                        stopTimer();
-                    } else {
-                        startButton.setText(R.string.pause);
-                        startTimer(timeCounter);
-                    }
-
-                    isRunning = !isRunning;
+                public void onClick(View view) {
+                   showNewProjectFragment();
                 }
             });
         }
-        Button resetButton = (Button) findViewById(R.id.stopButton);
-        if (resetButton != null) {
-            resetButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    stopTimer();
-                    timeCounter = 0;
-                    startTimer(timeCounter);
-                }
-            });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        if (drawer != null) {
+            drawer.setDrawerListener(toggle);
         }
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+        }
+
+        showCurrentProjectFragment();
     }
 
-    private void stopTimer() {
-        currentTimer.cancel();
-        currentTimer.purge();
+    private void showNewProjectFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        CreateProjectFragment fragment = new CreateProjectFragment();
+        fragment.show(ft, DIALOG_FRAGMENT_TAG);
     }
 
-    private void startTimer(int startTime) {
-        currentTimer = new Timer();
-        currentTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timerTextView.setText("" + timeCounter);
-                        timeCounter++;
-                    }
-                });
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null) {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
             }
-        }, 1000, 1000);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.current_project:
+                showCurrentProjectFragment();
+                break;
+
+            case R.id.nav_projects:
+                showProjectListFragment();
+                break;
+
+            case R.id.nav_sessions:
+                break;
+
+            case R.id.nav_statistics:
+                break;
+
+            case R.id.nav_share:
+                break;
+
+            case R.id.nav_about:
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
+
+    private void showCurrentProjectFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        CurrentProjectFragment fragment = new CurrentProjectFragment();
+        ft.replace(R.id.activity_content, fragment, CURRENT_FRAGMENT_TAG);
+        ft.commit();
+    }
+
+    private void showProjectListFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ProjectsListFragment fragment = new ProjectsListFragment();
+        ft.replace(R.id.activity_content, fragment, PROJECTS_FRAGMENT_TAG);
+        ft.commit();
+    }
+
+    @Override
+    public void onProjectFragmentInteraction(Project project) {
+
+    }
+
+    @Override
+    public void onNewProjectCreated(Project project) {
+        Toast.makeText(MainActivity.this, "Project " + project.getTitle() + " successfully created.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
