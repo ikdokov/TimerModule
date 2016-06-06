@@ -19,7 +19,7 @@ import android.widget.Toast;
 import businesslogic.Project;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, CreateProjectFragment.OnNewProjectFragmentInteractionListener, CurrentProjectFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, CreateProjectFragment.OnNewProjectFragmentInteractionListener, ProjectDetailsFragment.OnFragmentInteractionListener {
 
     private static final String PROJECTS_FRAGMENT_TAG = "PROJECTS_FRAGMENT_TAG";
     private static final String DIALOG_FRAGMENT_TAG = "DIALOG_FRAGMENT";
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
 
     private void showCurrentProjectFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        CurrentProjectFragment fragment = new CurrentProjectFragment();
+        ProjectDetailsFragment fragment = new ProjectDetailsFragment();
         ft.replace(R.id.activity_content, fragment, CURRENT_FRAGMENT_TAG);
         ft.commit();
     }

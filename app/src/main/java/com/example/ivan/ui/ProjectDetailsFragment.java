@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class CurrentProjectFragment extends Fragment {
+public class ProjectDetailsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
-    public CurrentProjectFragment() {
+    public ProjectDetailsFragment() {
     }
 
     @Override
