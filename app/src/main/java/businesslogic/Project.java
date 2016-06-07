@@ -9,9 +9,11 @@ import java.util.Observable;
  * Created by idokov on 13/05/2016.
  */
 public class Project extends Observable {
+    private long id;
     private String title;
     private String description;
     private String notes;
+    private boolean isArchived;
     private boolean isRunning;
     private ArrayList<Session> sessions;
     private long totalTime;
@@ -110,4 +112,11 @@ public class Project extends Observable {
         return false;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

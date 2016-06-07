@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,8 +21,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, CreateProjectFragment.OnNewProjectFragmentInteractionListener, ProjectDetailsFragment.OnFragmentInteractionListener {
 
     private static final String PROJECTS_FRAGMENT_TAG = "PROJECTS_FRAGMENT_TAG";
-    private static final String DIALOG_FRAGMENT_TAG = "DIALOG_FRAGMENT";
-    private static final String CURRENT_FRAGMENT_TAG = "CURRENT_FRAGMENT_TAG";
+    private static final String NEW_PROJECT_FRAGMENT_TAG = "DIALOG_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +55,14 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
         }
 
-        showCurrentProjectFragment();
+        showProjectListFragment(true);
     }
 
     private void showNewProjectFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment prev = getSupportFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-
         CreateProjectFragment fragment = new CreateProjectFragment();
-        fragment.show(ft, DIALOG_FRAGMENT_TAG);
+        ft.replace(R.id.activity_content, fragment, NEW_PROJECT_FRAGMENT_TAG);
+        ft.commit();
     }
 
 
@@ -113,12 +106,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.current_project:
-                showCurrentProjectFragment();
+            case R.id.active_projects:
+                showProjectListFragment(true);
                 break;
 
-            case R.id.nav_projects:
-                showProjectListFragment();
+            case R.id.archived_projects:
+                showProjectListFragment(false);
                 break;
 
             case R.id.nav_sessions:
@@ -141,16 +134,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void showCurrentProjectFragment() {
+    private void showProjectListFragment(boolean isActive) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ProjectDetailsFragment fragment = new ProjectDetailsFragment();
-        ft.replace(R.id.activity_content, fragment, CURRENT_FRAGMENT_TAG);
-        ft.commit();
-    }
-
-    private void showProjectListFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ProjectsListFragment fragment = new ProjectsListFragment();
+        ProjectsListFragment fragment = ProjectsListFragment.newInstance(isActive);
         ft.replace(R.id.activity_content, fragment, PROJECTS_FRAGMENT_TAG);
         ft.commit();
     }
