@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 
 import com.example.ivan.ui.databinding.ProjectListItemBinding;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import businesslogic.Project;
 
 public class ProjectsListRecyclerViewAdapter extends RecyclerView.Adapter<ProjectsListRecyclerViewAdapter.CustomViewHolder> {
 
-    private final List<Project> mValues;
+    private ArrayList<Project> mValues;
     private OnStartButtonClicked mListener;
 
-    public ProjectsListRecyclerViewAdapter(List<Project> items, OnStartButtonClicked listener) {
+    public ProjectsListRecyclerViewAdapter(ArrayList<Project> items, OnStartButtonClicked listener) {
         mValues = items;
         mListener = listener;
     }
@@ -64,5 +64,10 @@ public class ProjectsListRecyclerViewAdapter extends RecyclerView.Adapter<Projec
 
     public interface OnStartButtonClicked {
         public void onStartButtonClicked(int position);
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        mValues = projects;
+        notifyDataSetChanged();
     }
 }

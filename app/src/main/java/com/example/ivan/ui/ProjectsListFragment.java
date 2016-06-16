@@ -1,6 +1,7 @@
 package com.example.ivan.ui;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import businesslogic.Project;
-import businesslogic.ProjectManager;
+import businesslogic.TimerBusinessLogic;
 
 public class ProjectsListFragment extends Fragment implements ProjectsListRecyclerViewAdapter.OnStartButtonClicked {
 
@@ -22,8 +25,10 @@ public class ProjectsListFragment extends Fragment implements ProjectsListRecycl
     private boolean mIsActive;
 
     private OnListFragmentInteractionListener mListener;
-    private ProjectManager projectsManager;
+    private TimerBusinessLogic mTimerBusinessLogic;
     private ProjectsListRecyclerViewAdapter mAdapter;
+
+    private ArrayList<Project> mProjects = new ArrayList<>();
 
     public ProjectsListFragment() {
     }
@@ -40,7 +45,7 @@ public class ProjectsListFragment extends Fragment implements ProjectsListRecycl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        projectsManager = ProjectManager.getInstance();
+        mTimerBusinessLogic = TimerBusinessLogic.getInstance(getContext());
 
         if (getArguments() != null) {
             mIsActive = getArguments().getBoolean(IS_ACTIVE);
@@ -55,7 +60,7 @@ public class ProjectsListFragment extends Fragment implements ProjectsListRecycl
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mAdapter = new ProjectsListRecyclerViewAdapter(projectsManager.getActiveProjects(), this);
+            mAdapter = new ProjectsListRecyclerViewAdapter(mProjects, this);
             recyclerView.setAdapter(mAdapter);
         }
         return view;
@@ -88,11 +93,24 @@ public class ProjectsListFragment extends Fragment implements ProjectsListRecycl
         void onProjectFragmentInteraction(Project project);
     }
 
-
     private void showCurrentProjectFragment() {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ProjectDetailsFragment fragment = new ProjectDetailsFragment();
         ft.replace(R.id.activity_content, fragment, DETAILS_FRAGMENT_TAG);
         ft.commit();
+    }
+
+    class GetProjectTask extends AsyncTask<Void, Void, ArrayList<Project>> {
+
+        @Override
+        protected ArrayList<Project> doInBackground(Void... voids) {
+            return mTimerBusinessLogic.getAllProjects();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Project> projects) {
+            mProjects = projects;
+            mAdapter.setProjects(mProjects);
+        }
     }
 }

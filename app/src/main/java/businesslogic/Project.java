@@ -18,6 +18,7 @@ public class Project extends Observable {
     private ArrayList<Session> sessions;
     private long totalTime;
     private Session currentSession;
+    private long timeUpdated;
     // TODO: 14/05/2016 find better way to represent money
     private BigDecimal paymentPerHour;
     private BigDecimal paymentTotal;
@@ -118,5 +119,21 @@ public class Project extends Observable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isArchived() {
+        return this.isArchived;
+    }
+
+    public void setArchived(boolean isArchived) {
+        this.isArchived = isArchived;
+    }
+
+    public long getTimeUpdated() {
+        return timeUpdated;
+    }
+
+    public void setTimeUpdated(long timeUpdated) {
+        this.timeUpdated = timeUpdated;
     }
 }

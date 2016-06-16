@@ -17,7 +17,7 @@ public class TimerContract {
             "CREATE TABLE " + ProjectEntry.TABLE_NAME + " (" +
                     ProjectEntry._ID + " INTEGER PRIMARY KEY, " +
                     ProjectEntry.COLUMN_NAME_PROJECT_ID + TEXT_TYPE + COMMA_SEP +
-                    ProjectEntry.COLUMN_NAME_PROJECT_NAME + TEXT_TYPE + COMMA_SEP +
+                    ProjectEntry.COLUMN_NAME_PROJECT_TITLE + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_IS_ARCHIVED + INT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_NOTES + TEXT_TYPE + COMMA_SEP +
@@ -44,12 +44,13 @@ public class TimerContract {
     public static abstract class ProjectEntry implements BaseColumns {
         public static final String TABLE_NAME = "project";
         public static final String COLUMN_NAME_PROJECT_ID = "poject_id";
-        public static final String COLUMN_NAME_PROJECT_NAME = "project_name";
+        public static final String COLUMN_NAME_PROJECT_TITLE = "project_title";
         public static final String COLUMN_NAME_PROJECT_DESCRIPTION = "project_description";
         public static final String COLUMN_NAME_PROJECT_NOTES = "project_notes";
         public static final String COLUMN_NAME_IS_ARCHIVED = "is_archived";
-        public static final String COLUMN_NAME_PROJECT_PAYMENT_PER_HOUR = "project_notes";
-        public static final String COLUMN_NAME_PROJECT_TOTAL_PAYMENT = "project_notes";
+        public static final String COLUMN_NAME_PROJECT_PAYMENT_PER_HOUR = "payment_per_hour";
+        public static final String COLUMN_NAME_PROJECT_TOTAL_PAYMENT = "payment_total";
+        public static final String COLUMN_NAME_UPDATED = "timestamp_updated";
     }
 
     public static abstract class SessionEntry implements BaseColumns {
