@@ -3,7 +3,7 @@ package com.example.ivan.ui;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import businesslogic.Project;
 import db.ProjectDataSource;
 
+public class ProjectDetailsActivityFragment extends Fragment {
 
-public class ProjectDetailsFragment extends DialogFragment {
     private OnFragmentInteractionListener mListener;
 
     private static final String PROJECT_ID_EXTRA = "PROJECT_ID_EXTRA";
@@ -26,7 +26,7 @@ public class ProjectDetailsFragment extends DialogFragment {
         return fragment;
     }
 
-    public ProjectDetailsFragment() {
+    public ProjectDetailsActivityFragment() {
     }
 
     @Override

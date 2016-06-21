@@ -16,12 +16,12 @@ public class TimerContract {
     public static final String SQL_CREATE_PROJECT_TABLE =
             "CREATE TABLE " + ProjectEntry.TABLE_NAME + " (" +
                     ProjectEntry._ID + " INTEGER PRIMARY KEY, " +
-                    ProjectEntry.COLUMN_NAME_PROJECT_ID + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_TITLE + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_IS_ARCHIVED + INT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_NOTES + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_PAYMENT_PER_HOUR + TEXT_TYPE + COMMA_SEP +
+                    ProjectEntry.COLUMN_NAME_TIME_MODIFIED + TEXT_TYPE + COMMA_SEP +
                     ProjectEntry.COLUMN_NAME_PROJECT_TOTAL_PAYMENT + TEXT_TYPE + ")";
 
     public static final String SQL_DELETE_PROJECT_TABLE =
@@ -30,7 +30,6 @@ public class TimerContract {
     public static final String SQL_CREATE_SESSION_TABLE =
             "CREATE TABLE " + SessionEntry.TABLE_NAME + " (" +
                     SessionEntry._ID + " INTEGER PRIMARY KEY, " +
-                    SessionEntry.COLUMN_NAME_SESSION_ID + TEXT_TYPE + COMMA_SEP +
                     SessionEntry.COLUMN_NAME_SESSION_START_TIME + TEXT_TYPE + COMMA_SEP +
                     SessionEntry.COLUMN_NAME_SESSION_END_TIME + TEXT_TYPE + COMMA_SEP +
                     SessionEntry.COLUMN_NAME_SESSION_NOTE + TEXT_TYPE + COMMA_SEP +
@@ -41,6 +40,8 @@ public class TimerContract {
     public static final String SQL_DELETE_SESSION_TABLE =
             "DROP TABLE IF EXISTS " + SessionEntry.TABLE_NAME;
 
+    public static final String SQL_ALTER_TABLE_ADD_TIME_MODIFIED = "ALTER TABLE " + ProjectEntry.TABLE_NAME + " ADD COLUMN " + ProjectEntry.COLUMN_NAME_TIME_MODIFIED + " string;";
+
     public static abstract class ProjectEntry implements BaseColumns {
         public static final String TABLE_NAME = "project";
         public static final String COLUMN_NAME_PROJECT_ID = "poject_id";
@@ -50,7 +51,7 @@ public class TimerContract {
         public static final String COLUMN_NAME_IS_ARCHIVED = "is_archived";
         public static final String COLUMN_NAME_PROJECT_PAYMENT_PER_HOUR = "payment_per_hour";
         public static final String COLUMN_NAME_PROJECT_TOTAL_PAYMENT = "payment_total";
-        public static final String COLUMN_NAME_UPDATED = "timestamp_updated";
+        public static final String COLUMN_NAME_TIME_MODIFIED = "time_modified";
     }
 
     public static abstract class SessionEntry implements BaseColumns {
@@ -61,6 +62,4 @@ public class TimerContract {
         public static final String COLUMN_NAME_SESSION_NOTE = "session_note";
         public static final String COLUMN_NAME_PROJECT_ID = "project_id";
     }
-
-
 }

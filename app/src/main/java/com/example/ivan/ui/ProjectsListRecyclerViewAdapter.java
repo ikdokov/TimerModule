@@ -15,9 +15,9 @@ import businesslogic.Project;
 public class ProjectsListRecyclerViewAdapter extends RecyclerView.Adapter<ProjectsListRecyclerViewAdapter.CustomViewHolder> {
 
     private ArrayList<Project> mValues;
-    private OnStartButtonClicked mListener;
+    private OnListItemClickListener mListener;
 
-    public ProjectsListRecyclerViewAdapter(ArrayList<Project> items, OnStartButtonClicked listener) {
+    public ProjectsListRecyclerViewAdapter(ArrayList<Project> items, OnListItemClickListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -41,29 +41,26 @@ public class ProjectsListRecyclerViewAdapter extends RecyclerView.Adapter<Projec
         return mValues.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
+    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ProjectListItemBinding projectItemBinding;
 
         public CustomViewHolder(ProjectListItemBinding projectItemBinding) {
             super(projectItemBinding.getRoot());
             this.projectItemBinding = projectItemBinding;
+            projectItemBinding.getRoot().setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mListener != null) {
+                mListener.onItemClicked(getAdapterPosition());
+            }
         }
 
         public ProjectListItemBinding getProjectItemBinding() {
             return projectItemBinding;
         }
-    }
-
-    public void onStartButtonClick(View view) {
-        if (mListener != null) {
-            int position = (int) view.getTag();
-            mListener.onStartButtonClicked(position);
-        }
-    }
-
-    public interface OnStartButtonClicked {
-        public void onStartButtonClicked(int position);
     }
 
     public void setProjects(ArrayList<Project> projects) {

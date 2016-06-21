@@ -14,12 +14,12 @@ import businesslogic.Session;
 public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRecyclerViewAdapter.ViewHolder> {
 
     private final List<Session> mValues;
+    private OnListItemClickListener mListener;
 
-    public SessionsRecyclerViewAdapter(ArrayList<Session> items) {
+    public SessionsRecyclerViewAdapter(ArrayList<Session> items, OnListItemClickListener listener) {
         mValues = items;
+        mListener = listener;
     }
-
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,19 +31,6 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-//        holder.mIdView.setText(mValues.get(position).id);
-//        holder.mContentView.setText(mValues.get(position).content);
-
-//        holder.mView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (null != mListener) {
-//                    // Notify the active callbacks interface (the activity, if the
-//                    // fragment is attached to one) that an item has been selected.
-//                    mListener.onListFragmentInteraction(holder.mItem);
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -51,7 +38,7 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
@@ -67,6 +54,13 @@ public class SessionsRecyclerViewAdapter extends RecyclerView.Adapter<SessionsRe
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mListener != null) {
+                mListener.onItemClicked(getAdapterPosition());
+            }
         }
     }
 }
