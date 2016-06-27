@@ -11,7 +11,11 @@ import com.example.ivan.ui.databinding.ProjectListItemBinding;
 import java.util.ArrayList;
 
 import businesslogic.Project;
+import listener.OnListItemClickListener;
 
+/**
+ * Created by idokov on 26/06/2016.
+ */
 public class ProjectsListRecyclerViewAdapter extends RecyclerView.Adapter<ProjectsListRecyclerViewAdapter.CustomViewHolder> {
 
     private ArrayList<Project> mValues;

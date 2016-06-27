@@ -1,22 +1,22 @@
 package com.example.ivan.ui;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import businesslogic.Project;
 import businesslogic.TimerBusinessLogic;
 import db.ProjectDataSource;
+import listener.OnListItemClickListener;
 
 public class ProjectsListFragment extends Fragment implements OnListItemClickListener {
 
@@ -31,6 +31,7 @@ public class ProjectsListFragment extends Fragment implements OnListItemClickLis
     private ProjectsListRecyclerViewAdapter mAdapter;
 
     private ArrayList<Project> mProjects = new ArrayList<>();
+    private ProjectDataSource mProjectDataSource;
 
     public ProjectsListFragment() {
     }
@@ -47,13 +48,25 @@ public class ProjectsListFragment extends Fragment implements OnListItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTimerBusinessLogic = TimerBusinessLogic.getInstance(getContext());
-
         if (getArguments() != null) {
             mIsActive = getArguments().getBoolean(IS_ACTIVE);
         }
 
-        new GetProjectTask().execute();
+        mProjectDataSource = new ProjectDataSource(getActivity());
+
+        if (mIsActive) {
+            mProjects = mProjectDataSource.getActiveProjects();
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                toolbar.setTitle(R.string.active_projects);
+            }
+        } else {
+            mProjects = mProjectDataSource.getArchivedProjects();
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                toolbar.setTitle(R.string.archived_projects);
+            }
+        }
     }
 
     @Override
@@ -89,38 +102,49 @@ public class ProjectsListFragment extends Fragment implements OnListItemClickLis
 
     @Override
     public void onItemClicked(int position) {
-        Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
-        showDetailsProjectFragment(position);
-//        showDetailsProjectFragment();
+        showDetailsProjectFragment(mProjects.get(position).getId());
+    }
+
+    public void notifyDataSetChanged() {
+        if (mAdapter != null) {
+            if (mIsActive) {
+                mProjects = mProjectDataSource.getActiveProjects();
+            } else {
+                mProjects = mProjectDataSource.getArchivedProjects();
+            }
+
+            mAdapter.setProjects(mProjects);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     public interface OnListFragmentInteractionListener {
         void onProjectFragmentInteraction(Project project);
     }
 
-    private void showDetailsProjectFragment(int projectId) {
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ProjectDetailsFragment fragment = ProjectDetailsFragment.newInstance(projectId);
-        ft.replace(R.id.content, fragment, DETAILS_FRAGMENT_TAG);
-        ft.commit();
+    private void showDetailsProjectFragment(long projectId) {
+        Intent intent = new Intent(getActivity(), ProjectDetailsActivity.class);
+        intent.putExtra(ProjectDetailsActivity.PROJECT_ID_EXTRA, projectId);
+        getActivity().startActivity(intent);
     }
 
-    class GetProjectTask extends AsyncTask<Void, Void, ArrayList<Project>> {
+//    class GetProjectTask extends AsyncTask<Void, Void, ArrayList<Project>> {
+//
+//        @Override
+//        protected ArrayList<Project> doInBackground(Void... voids) {
+//            ProjectDataSource source = new ProjectDataSource(getContext());
+//            source.open();
+////            source.createDummyProjects();
+//            ArrayList<Project> projects = source.getAllProjects();
+//            source.close();
+//            return projects;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(ArrayList<Project> projects) {
+//            mProjects = projects;
+//            mAdapter.setProjects(mProjects);
+//        }
+//    }
 
-        @Override
-        protected ArrayList<Project> doInBackground(Void... voids) {
-            ProjectDataSource source = new ProjectDataSource(getContext());
-            source.open();
-//            source.createDummyProjects();
-            ArrayList<Project> projects = source.getAllProjects();
-            source.close();
-            return projects;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Project> projects) {
-            mProjects = projects;
-            mAdapter.setProjects(mProjects);
-        }
-    }
 }

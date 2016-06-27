@@ -1,5 +1,6 @@
 package com.example.ivan.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,15 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import businesslogic.Project;
+import db.ProjectDataSource;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, CreateProjectFragment.OnNewProjectFragmentInteractionListener, ProjectDetailsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, ProjectDetailsFragment.OnFragmentInteractionListener {
 
     private static final String PROJECTS_FRAGMENT_TAG = "PROJECTS_FRAGMENT_TAG";
     private static final String NEW_PROJECT_FRAGMENT_TAG = "DIALOG_FRAGMENT";
+
+    private ProjectDataSource mProjectDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   showNewProjectFragment();
+                   startActivity(new Intent(MainActivity.this, AddProjectActivity.class));
                 }
             });
         }
@@ -57,15 +60,19 @@ public class MainActivity extends AppCompatActivity
 
         showProjectListFragment(true);
 
+        mProjectDataSource = new ProjectDataSource(this);
+
     }
 
-    private void showNewProjectFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        CreateProjectFragment fragment = new CreateProjectFragment();
-        ft.replace(R.id.activity_content, fragment, NEW_PROJECT_FRAGMENT_TAG);
-        ft.commit();
-    }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        ProjectsListFragment projectListFragment = (ProjectsListFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_FRAGMENT_TAG);
+        if (projectListFragment != null) {
+            projectListFragment.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -93,9 +100,7 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -125,6 +130,8 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_about:
+                ProjectDataSource source = new ProjectDataSource(this);
+                source.createDummyProjects();
                 break;
         }
 
@@ -145,11 +152,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onProjectFragmentInteraction(Project project) {
 
-    }
-
-    @Override
-    public void onNewProjectCreated(Project project) {
-        Toast.makeText(MainActivity.this, "Project " + project.getTitle() + " successfully created.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
