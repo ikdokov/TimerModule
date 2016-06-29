@@ -85,4 +85,5 @@
     <string name="project_title">Project Title</string>
     <string name="discard_label">Cancel</string>
     <string name="save_label">Save</string>
+    <string name="empty_title_add_project">Title field is required. Please enter fill in.</string>
 </resources>

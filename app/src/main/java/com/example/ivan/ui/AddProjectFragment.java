@@ -2,6 +2,7 @@ package com.example.ivan.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import businesslogic.Project;
 import db.ProjectDataSource;
@@ -53,7 +53,7 @@ public class AddProjectFragment extends Fragment {
             String title = nameEditText.getText().toString();
 
             if (title.isEmpty()) {
-                Toast.makeText(getActivity(), "Empty title!", Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView(), R.string.empty_title_add_project, Snackbar.LENGTH_LONG).show();
                 return true;
             }
 

@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity
     private static final String PROJECTS_FRAGMENT_TAG = "PROJECTS_FRAGMENT_TAG";
     private static final String NEW_PROJECT_FRAGMENT_TAG = "DIALOG_FRAGMENT";
 
+    private static final int ADD_PROJECT_ACTIVITY_REQUEST = 2;
+
     private ProjectDataSource mProjectDataSource;
 
     @Override
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   startActivity(new Intent(MainActivity.this, AddProjectActivity.class));
+                   startActivityForResult(new Intent(MainActivity.this, AddProjectActivity.class), ADD_PROJECT_ACTIVITY_REQUEST);
                 }
             });
         }
@@ -157,5 +159,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == ADD_PROJECT_ACTIVITY_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                Snackbar.make(get)
+//            }
+//        }
     }
 }

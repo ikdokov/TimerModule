@@ -10,12 +10,12 @@
 
     <fragment
         android:id="@+id/add_project_fragment"
+        android:layout_marginTop="48dp"
         android:layout_below="@+id/project_toolbar_layout"
         android:name="com.example.ivan.ui.AddProjectFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_add_project"
-        android:layout_gravity="center_vertical" />
+        tools:layout="@layout/fragment_add_project" />
     
 </android.support.design.widget.CoordinatorLayout>
 
