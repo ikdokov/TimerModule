@@ -19,7 +19,7 @@ import businesslogic.Project;
 import db.ProjectDataSource;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, ProjectDetailsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ProjectsListFragment.OnListFragmentInteractionListener, ProjectInfoFragment.OnFragmentInteractionListener {
 
     private static final String PROJECTS_FRAGMENT_TAG = "PROJECTS_FRAGMENT_TAG";
     private static final String NEW_PROJECT_FRAGMENT_TAG = "DIALOG_FRAGMENT";

@@ -1,5 +1,6 @@
 package businesslogic;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,7 +9,7 @@ import java.util.Observable;
 /**
  * Created by idokov on 13/05/2016.
  */
-public class Project extends Observable {
+public class Project extends Observable implements Serializable {
     private long id;
     private String title;
     private String description;
@@ -23,8 +24,7 @@ public class Project extends Observable {
     private BigDecimal paymentPerHour;
     private BigDecimal paymentTotal;
 
-    public Project(String title) {
-        this.title = title;
+    public Project() {
     }
 
     public String getTitle() {

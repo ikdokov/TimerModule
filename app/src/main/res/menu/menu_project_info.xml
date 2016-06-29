@@ -1,7 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.ivan.ui.ProjectDetailsActivity">
+    tools:context=".ProjectInfoActivity">
+    <item android:id="@+id/menu_share"
+        android:icon="@drawable/ic_mode_edit_white_24dp"
+        app:showAsAction="always"
+        android:title="Favorite" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

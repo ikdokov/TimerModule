@@ -22,14 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProjectDetailsActivity"
+            android:name=".ProjectInfoActivity"
             android:label="@string/title_activity_project_details"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".AddProjectActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/add_project"/>
+            android:label="@string/add_project"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

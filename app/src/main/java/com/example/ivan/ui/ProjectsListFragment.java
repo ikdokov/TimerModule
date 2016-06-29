@@ -123,8 +123,8 @@ public class ProjectsListFragment extends Fragment implements OnListItemClickLis
     }
 
     private void showDetailsProjectFragment(long projectId) {
-        Intent intent = new Intent(getActivity(), ProjectDetailsActivity.class);
-        intent.putExtra(ProjectDetailsActivity.PROJECT_ID_EXTRA, projectId);
+        Intent intent = new Intent(getActivity(), ProjectInfoActivity.class);
+        intent.putExtra(ProjectInfoActivity.PROJECT_ID_EXTRA, projectId);
         getActivity().startActivity(intent);
     }
 
