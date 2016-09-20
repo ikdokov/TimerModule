@@ -3,7 +3,7 @@ package com.example.ivan.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +15,7 @@ import android.widget.EditText;
 import businesslogic.Project;
 import db.ProjectDataSource;
 
-public class AddProjectFragment extends Fragment {
+public class AddProjectDialogFragment extends DialogFragment {
 
     private EditText nameEditText;
     private EditText descriptionEditText;

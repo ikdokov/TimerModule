@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity
     private static final String NEW_PROJECT_FRAGMENT_TAG = "DIALOG_FRAGMENT";
 
     private static final int ADD_PROJECT_ACTIVITY_REQUEST = 2;
+    private static final String PROJECT_NAME_EXTRA_RESULT = "PROJECT_NAME_EXTRA_RESULT";
+    private static final String ADD_PROJECT_DIALOG_FRAGMENT_TAG = "ADD_PROJECT_DIALOG_FRAGMENT_TAG";
 
     private ProjectDataSource mProjectDataSource;
 
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   startActivityForResult(new Intent(MainActivity.this, AddProjectActivity.class), ADD_PROJECT_ACTIVITY_REQUEST);
+                    showAddProjectDialog();
                 }
             });
         }
@@ -163,10 +167,24 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == ADD_PROJECT_ACTIVITY_REQUEST) {
-//            if (resultCode == RESULT_OK) {
-//                Snackbar.make(get)
-//            }
-//        }
+        if (requestCode == ADD_PROJECT_ACTIVITY_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String projectName = data.getStringExtra(PROJECT_NAME_EXTRA_RESULT);
+                Snackbar.make(findViewById(R.id.activity_content), projectName + " " + R.string.successfully_added, Snackbar.LENGTH_LONG);
+            }
+        }
     }
+
+    private void showAddProjectDialog() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(ADD_PROJECT_DIALOG_FRAGMENT_TAG);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        AddProjectDialogFragment addProject = new AddProjectDialogFragment();
+        addProject.show(ft, ADD_PROJECT_DIALOG_FRAGMENT_TAG);
+    }
+
 }
